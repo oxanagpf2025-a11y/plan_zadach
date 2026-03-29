@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Планировщик задач</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="app">
+    <header class="header">
+      <h1 class="title">Планировщик задач</h1>
+      <p class="subtitle">Добавляйте задачи, отмечайте выполненные и удаляйте лишнее</p>
+    </header>
+
+    <form class="form" id="task-form" autocomplete="off">
+      <label class="sr-only" for="task-input">Новая задача</label>
+      <input
+        type="text"
+        id="task-input"
+        class="input"
+        placeholder="Что нужно сделать?"
+        maxlength="500"
+        required
+      />
+      <button type="submit" class="btn btn-primary">Добавить</button>
+    </form>
+
+    <section class="list-section" aria-labelledby="list-heading">
+      <h2 id="list-heading" class="list-heading">Список задач</h2>
+      <ul class="task-list" id="task-list" role="list"></ul>
+      <p class="empty" id="empty-state" hidden>Задач пока нет — добавьте первую.</p>
+    </section>
+  </main>
+  <script src="app.js"></script>
+</body>
+</html>
