@@ -3,34 +3,93 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script>
+    (function () {
+      var k = "task-planner-theme";
+      var t = localStorage.getItem(k);
+      if (t !== "light" && t !== "dark") {
+        t = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+      }
+      document.documentElement.setAttribute("data-theme", t);
+    })();
+  </script>
   <title>Планировщик задач</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
+  <div class="bg-orb bg-orb--1" aria-hidden="true"></div>
+  <div class="bg-orb bg-orb--2" aria-hidden="true"></div>
+
   <main class="app">
     <header class="header">
-      <h1 class="title">Планировщик задач</h1>
-      <p class="subtitle">Добавляйте задачи, отмечайте выполненные и удаляйте лишнее</p>
+      <div class="header-top">
+        <div class="header-intro">
+          <p class="eyebrow">Организуйте день</p>
+          <h1 class="title">Планировщик задач</h1>
+          <p class="subtitle">Выберите дату в календаре и добавляйте дела на этот день</p>
+        </div>
+        <button
+          type="button"
+          class="theme-toggle"
+          id="theme-toggle"
+          aria-label="Переключить тему"
+        >
+          <span class="theme-toggle__icons" aria-hidden="true">
+            <svg class="theme-toggle__icon theme-toggle__icon--sun" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="2"/>
+              <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+            <svg class="theme-toggle__icon theme-toggle__icon--moon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+          <span class="theme-toggle__label" id="theme-toggle-label">Тема</span>
+        </button>
+      </div>
     </header>
 
-    <form class="form" id="task-form" autocomplete="off">
-      <label class="sr-only" for="task-input">Новая задача</label>
-      <input
-        type="text"
-        id="task-input"
-        class="input"
-        placeholder="Что нужно сделать?"
-        maxlength="500"
-        required
-      />
-      <button type="submit" class="btn btn-primary">Добавить</button>
-    </form>
+    <div class="layout">
+      <section class="calendar-card glass" aria-labelledby="cal-heading">
+        <h2 id="cal-heading" class="sr-only">Календарь</h2>
+        <div class="cal-header">
+          <button type="button" class="cal-nav" id="cal-prev" aria-label="Предыдущий месяц">‹</button>
+          <p class="cal-month" id="cal-month-label"></p>
+          <button type="button" class="cal-nav" id="cal-next" aria-label="Следующий месяц">›</button>
+        </div>
+        <div class="cal-weekdays" aria-hidden="true">
+          <span>Пн</span><span>Вт</span><span>Ср</span><span>Чт</span><span>Пт</span><span>Сб</span><span>Вс</span>
+        </div>
+        <div class="cal-grid" id="cal-grid" role="grid"></div>
+      </section>
 
-    <section class="list-section" aria-labelledby="list-heading">
-      <h2 id="list-heading" class="list-heading">Список задач</h2>
-      <ul class="task-list" id="task-list" role="list"></ul>
-      <p class="empty" id="empty-state" hidden>Задач пока нет — добавьте первую.</p>
-    </section>
+      <section class="tasks-column">
+        <p class="selected-date" id="selected-date-label"></p>
+
+        <form class="form glass" id="task-form" autocomplete="off">
+          <label class="sr-only" for="task-input">Новая задача</label>
+          <input
+            type="text"
+            id="task-input"
+            class="input"
+            placeholder="Задача на выбранный день…"
+            maxlength="500"
+            required
+          />
+          <button type="submit" class="btn btn-primary">
+            <span class="btn-text">Добавить</span>
+          </button>
+        </form>
+
+        <section class="list-section" aria-labelledby="list-heading">
+          <h2 id="list-heading" class="list-heading">Задачи на этот день</h2>
+          <ul class="task-list" id="task-list" role="list"></ul>
+          <p class="empty glass" id="empty-state" hidden>На эту дату задач нет — добавьте первую.</p>
+        </section>
+      </section>
+    </div>
   </main>
   <script src="app.js"></script>
 </body>
